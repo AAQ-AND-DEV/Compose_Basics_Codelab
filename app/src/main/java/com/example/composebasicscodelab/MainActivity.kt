@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 //adding a composable fun makes MyApp a container, thereby reusable throughout app to host other composables and maintain theme
-fun MyApp(content: @Composable () -> Unit){
+fun MyApp(content: @Composable () -> Unit) {
     ComposeBasicsCodelabTheme {
         // A surface container using the 'background' color from the theme
         Surface(color = MaterialTheme.colors.background) {
@@ -36,36 +36,42 @@ fun MyApp(content: @Composable () -> Unit){
 }
 
 @Composable
-fun MyScreenContent(names: List<String> = listOf("Android", "there")){
-    Column{
-        for (name in names){
+fun MyScreenContent(names: List<String> = listOf("Android", "there")) {
+    val counterState = remember { mutableStateOf(0) }
 
-        Greeting(name = name)
-        Divider(color = Color.Black)
-
+    Column(Modifier.fillMaxHeight()) {
+        Column(Modifier.weight(1f)) {
+            for (name in names) {
+                Greeting(name = name)
+                Divider(color = Color.Black)
+            }
         }
-        Divider(color = Color.Transparent, thickness = 32.dp)
-        Counter()
+        Counter(count = counterState.value,
+            updateCount = { newCount -> counterState.value = newCount })
     }
-
 }
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!", modifier = Modifier
+    Text(
+        text = "Hello $name!", modifier = Modifier
 //        .wrapContentHeight()
 //        .wrapContentWidth()
 //        .size(28.dp)
-        .padding(12.dp)
-        )
+            .padding(12.dp)
+    )
 }
 
 @Composable
-fun Counter(){
-    val count = remember { mutableStateOf(0)}
-    
-    Button(onClick = {count.value++}){
-        Text(stringResource(R.string.counter_text, count.value))
+fun Counter(count: Int, updateCount: (Int) -> Unit) {
+
+    Button(
+        onClick = { updateCount(count + 1) },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (count > 5) Color.Green else Color.LightGray
+        )
+    ) {
+        Text(stringResource(R.string.counter_text, count))
     }
 }
 
@@ -79,9 +85,9 @@ fun DefaultPreview() {
 
 @Preview(showBackground = true, name = "other_preview")
 @Composable
-fun OtherPreview(){
+fun OtherPreview() {
     ComposeBasicsCodelabTheme {
         Greeting(name = "Aaron")
-        
+
     }
 }
