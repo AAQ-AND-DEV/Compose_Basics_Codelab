@@ -3,6 +3,10 @@ package com.example.composebasicscodelab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composebasicscodelab.ui.theme.ComposeBasicsCodelabTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,11 +56,15 @@ fun MyScreenContent(names: List<String> = List(1000){"Hello Android #$it"}) {
 
 @Composable
 fun Greeting(name: String) {
+    var isSelected by remember { mutableStateOf(false)}
+    val backGroundColor by animateColorAsState(if (isSelected) Color.Red else Color.Transparent)
     Text(
         text = "Hello $name!", modifier = Modifier
 //        .wrapContentHeight()
 //        .wrapContentWidth()
 //        .size(28.dp)
+            .clickable { isSelected = !isSelected }
+            .background(backGroundColor)
             .padding(12.dp)
     )
 }
