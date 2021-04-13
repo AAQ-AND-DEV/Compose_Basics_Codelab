@@ -3,30 +3,58 @@ package com.example.composebasicscodelab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.composebasicscodelab.ui.theme.ComposeBasicsCodelabTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ComposeBasicsCodelabTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
-            }
+            MyApp { MyScreenContent() }
+        }
+    }
+}
+
+@Composable
+//adding a composable fun makes MyApp a container, thereby reusable throughout app to host other composables and maintain theme
+fun MyApp(content: @Composable () -> Unit){
+    ComposeBasicsCodelabTheme {
+        // A surface container using the 'background' color from the theme
+        Surface(color = MaterialTheme.colors.background) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun MyScreenContent(names: List<String> = listOf("Android", "there")){
+    Column{
+        for (name in names){
+
+        Greeting(name = name)
+        Divider(color = Color.Black)
+
         }
     }
 }
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+    Text(text = "Hello $name!", modifier = Modifier
+//        .wrapContentHeight()
+//        .wrapContentWidth()
+//        .size(28.dp)
+        .padding(12.dp)
+        )
 }
 
 @Preview(showBackground = true, name = "default_preview")
