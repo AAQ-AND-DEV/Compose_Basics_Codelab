@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -36,16 +38,11 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun MyScreenContent(names: List<String> = listOf("Android", "there")) {
+fun MyScreenContent(names: List<String> = List(1000){"Hello Android #$it"}) {
     val counterState = remember { mutableStateOf(0) }
 
     Column(Modifier.fillMaxHeight()) {
-        Column(Modifier.weight(1f)) {
-            for (name in names) {
-                Greeting(name = name)
-                Divider(color = Color.Black)
-            }
-        }
+       NameList(names, Modifier.weight(1f))
         Counter(count = counterState.value,
             updateCount = { newCount -> counterState.value = newCount })
     }
@@ -75,11 +72,21 @@ fun Counter(count: Int, updateCount: (Int) -> Unit) {
     }
 }
 
+@Composable
+fun NameList(names: List<String>, modifier: Modifier = Modifier){
+    LazyColumn(modifier = modifier) {
+        items(items = names){ name ->
+            Greeting(name = name)
+            Divider(color = Color.Black)
+        }
+    }
+}
+
 @Preview(showBackground = true, name = "default_preview")
 @Composable
 fun DefaultPreview() {
-    ComposeBasicsCodelabTheme {
-        Greeting("Android")
+    MyApp{
+        MyScreenContent()
     }
 }
 
