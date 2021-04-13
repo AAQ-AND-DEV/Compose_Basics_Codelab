@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ComposeBasicsCodelab</string>
+    <string name="counter_text">I\'ve been clicked %s times</string>
 </resources>
