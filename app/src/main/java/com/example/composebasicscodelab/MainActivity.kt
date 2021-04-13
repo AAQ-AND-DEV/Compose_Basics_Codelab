@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,39 +50,50 @@ fun MyApp(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun MyScreenContent(names: List<String> = List(1000){"Hello Android #$it"}) {
+fun MyScreenContent(names: List<String> = List(1000) { "Hello Android #$it" }) {
     val counterState = remember { mutableStateOf(0) }
 
     Column(Modifier.fillMaxHeight()) {
         NewsStory()
-       NameList(names, Modifier.weight(1f))
+        NameList(names, Modifier.weight(1f))
         Counter(count = counterState.value,
             updateCount = { newCount -> counterState.value = newCount })
     }
 }
 
 @Composable
-fun NewsStory(){
-    Column(modifier = Modifier.padding(16.dp)) {
-        Image(
-            painter = painterResource(id = R.drawable.header),
-            contentDescription = null,
-            modifier = Modifier
-                .height(180.dp)
-                .fillMaxWidth()
-                .clip(shape = RoundedCornerShape(4.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(Modifier.height(16.dp))
-        Text("A day in Shark Fin Cove")
-        Text("Davenport, California")
-        Text("December 2018")
+fun NewsStory() {
+    MaterialTheme {
+        val typography = MaterialTheme.typography
+
+        Column(modifier = Modifier.padding(16.dp)) {
+            Image(
+                painter = painterResource(id = R.drawable.header),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(180.dp)
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(4.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(Modifier.height(16.dp))
+            Text(
+                "A day wandering through the sandhills " +
+                        "in Shark Fin Cove, and a few of the" +
+                        " sights I saw",
+                style = typography.h4,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text("Davenport, California", style = typography.body2)
+            Text("December 2018", style = typography.body2)
+        }
     }
 }
 
 @Composable
 fun Greeting(name: String) {
-    var isSelected by remember { mutableStateOf(false)}
+    var isSelected by remember { mutableStateOf(false) }
     val backGroundColor by animateColorAsState(if (isSelected) Color.Red else Color.Transparent)
     Text(
         text = "Hello $name!", modifier = Modifier
@@ -108,9 +120,9 @@ fun Counter(count: Int, updateCount: (Int) -> Unit) {
 }
 
 @Composable
-fun NameList(names: List<String>, modifier: Modifier = Modifier){
+fun NameList(names: List<String>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
-        items(items = names){ name ->
+        items(items = names) { name ->
             Greeting(name = name)
             Divider(color = Color.Black)
         }
@@ -120,7 +132,7 @@ fun NameList(names: List<String>, modifier: Modifier = Modifier){
 @Preview(showBackground = true, name = "default_preview")
 @Composable
 fun DefaultPreview() {
-    MyApp{
+    MyApp {
         MyScreenContent()
     }
 }
