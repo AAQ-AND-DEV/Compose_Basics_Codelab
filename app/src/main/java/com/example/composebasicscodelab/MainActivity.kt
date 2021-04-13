@@ -29,10 +29,19 @@ fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "default_preview")
 @Composable
 fun DefaultPreview() {
     ComposeBasicsCodelabTheme {
         Greeting("Android")
+    }
+}
+
+@Preview(showBackground = true, name = "other_preview")
+@Composable
+fun OtherPreview(){
+    ComposeBasicsCodelabTheme {
+        Greeting(name = "Aaron")
+        
     }
 }
